@@ -20,17 +20,28 @@ services:
     depends_on:
       - db
 
-  db: 
+  db:
     image: postgres:13-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com  # Replace with your email
+      PGADMIN_DEFAULT_PASSWORD: admin  # Replace with your desired password
+    ports:
+      - "5051:80"  # pgAdmin will be available on http://localhost:5050
+    depends_on:
+      - db
 
 
 
 volumes:
-  dev-db-data:    
+  dev-db-data:
